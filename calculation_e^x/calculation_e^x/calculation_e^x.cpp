@@ -1,18 +1,39 @@
 ﻿#include <iostream>
-#include "../headers/base_main.h"
+#include <quadmath.h>
 #include "../headers/calculation_e^x.h"
 
 int main()
 {
-	double calculation_result = 0;
-	double x;
-	uint64_t n;
+	while (true)
+	{
+		setlocale(LC_CTYPE, "Rus");
+		string format = "%.31Qe";
 
-	base_main(&x, &n);
+		__float128 calculation_result;
+		__float128 x;
+		uint32_t n;
 
-	//calculation_ex(x, n, &calculation_result);
-	calculation_ex_inf(x, n, &calculation_result);
-	cout << "e^" << x << " = " << calculation_result << endl;
+		cout << "Введите x: ";
+		string in;
+		cin >> in;
+		x = strtoflt128(in.c_str(), NULL);
+
+		cout << "Введите n: ";
+		cin >> n;
+
+		calculation_ex(x, n, &calculation_result);
+
+		n = quadmath_snprintf(NULL, 0, format.c_str(), calculation_result);
+		if (n > 0)
+		{
+			string out(n + 1, '\0');
+			quadmath_snprintf(&out[0], out.capacity(), format.c_str(), calculation_result);
+			cout << out << endl;
+		}
+
+		string end;
+		cin >> end;
+	}
 
 	return 0;
 }

@@ -1,18 +1,17 @@
 #pragma once
 
-#define _USE_MATH_DEFINES
-
 #include <chrono>
 #include <cmath>
+#include <quadmath.h>
 
 using namespace std;
 using namespace chrono;
 
-static double fact(uint64_t n)
+static __float128 fact(uint32_t n)
 {
-	double result = 1;
+	__float128 result = 1;
 
-	for (uint64_t i = 2; i <= n; i++)
+	for (uint32_t i = 2; i <= n; i++)
 	{
 		result *= i;
 	}
@@ -20,50 +19,42 @@ static double fact(uint64_t n)
 	return result;
 }
 
-static void calculation_ex(double x, uint64_t n, double* out)
+static void calculation_ex(__float128 x, uint32_t n, __float128* out)
 {
-	double result = 0;
+	__float128 result = 0;
 
 	auto time_start = high_resolution_clock::now();
 
-	for (uint64_t i = 0; i <= n; i++)
-	{	
-
-		result += pow(x, i) / fact(i);
-	}
-	*out = result;
-
-	auto time_end = high_resolution_clock::now();
-	duration<double> time = time_end - time_start;
-	cout << time.count() << endl;
-}
-
-static void calculation_ex_inf(double x, uint64_t n, double* out)
-{
-	double result = 0;
-
-	auto time_start = high_resolution_clock::now();
-
-	double pow_number;
-	double fact_number;
-	for (uint64_t i = 0; i <= n; i++)
+	uint32_t i = 0;
+	__float128 pow_number = powq(x, i);
+	__float128 fact_number = fact(i);
+	do
 	{
-		pow_number = pow(x, i);
-		fact_number = fact(i);
-
-		if (fact_number == HUGE_VAL || pow_number == HUGE_VAL)
-		{
-			cout << i << endl;
-			break;
-		}
-
 		result += pow_number / fact_number;
-	}
-	cout << "pow_number = " << pow_number << endl;
-	cout << "fact_number = " << fact_number << endl;
-	*out = result;
+
+		i++;
+		pow_number = powq(x, i);
+		fact_number = fact(i);
+	} while (pow_number != INFINITY && fact_number != INFINITY && i <= n);
 
 	auto time_end = high_resolution_clock::now();
 	duration<double> time = time_end - time_start;
 	cout << "time = " << time.count() << endl;
+
+	/*информация для отслеживания закономерностей*/
+	if (pow_number == INFINITY || fact_number == INFINITY)
+	{
+		cout << "i = " << i << endl;
+
+		if (pow_number == INFINITY)
+		{
+			cout << "pow = infinity" << endl;
+		}
+		if (fact_number == INFINITY)
+		{
+			cout << "fact = infinity" << endl;
+		}
+	}
+
+	*out = result;
 }
