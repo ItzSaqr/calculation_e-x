@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <locale.h>
 #include <quadmath.h>
 #include "../headers/calculation_e^x_optimization.h"
 
@@ -6,7 +7,7 @@ int main()
 {
 	while (true)
 	{
-		setlocale(LC_CTYPE, "Rus");
+		setlocale(LC_ALL, "Rus");
 		string format = "%.31Qe";
 
 		__float128 calculation_result;

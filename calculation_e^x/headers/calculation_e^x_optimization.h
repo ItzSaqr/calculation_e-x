@@ -1,26 +1,41 @@
 #pragma once
 
-#include <chrono>
+#include <time.h>
 #include <cmath>
 
 using namespace std;
-using namespace chrono;
 
 static void calculation_ex_optimization(__float128 x, uint32_t n, __float128* out)
 {
-	auto time_start = high_resolution_clock::now();
+	clock_t time_start, time_end;
+	double elapsed;
 
 	__float128 result = 1;
 
-	for (uint32_t i = n; i > 0; i--)
+	time_start = clock();
+
+	bool negative_x = false;
+
+	if (x < 0)
+	{
+		x *= -1;
+		negative_x = true;
+	}
+
+	for (uint32_t i = n; result != INFINITY && i > 0; i--)
 	{
 		result *= x / i;
 		result += 1;
 	}
 
-	auto time_end = high_resolution_clock::now();
-	duration<double> time = time_end - time_start;
-	cout << "time = " << time.count() << endl;
+	if (result != INFINITY && negative_x)
+	{
+		result = 1 / result;
+	}
+
+	time_end = clock();
+	elapsed = ((double)(time_end - time_start)) / CLOCKS_PER_SEC;
+	cout << "time = " << elapsed << endl;
 
 	*out = result;
 }
