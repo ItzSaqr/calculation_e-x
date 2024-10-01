@@ -7,7 +7,8 @@ int main()
 {
 	while (true)
 	{
-		setlocale(LC_ALL, "Rus");
+		setlocale(LC_ALL, "Russian");
+
 		string format = "%.31Qe";
 
 		__float128 calculation_result;
@@ -24,16 +25,12 @@ int main()
 
 		calculation_ex_optimization(x, n, &calculation_result);
 
-		n = quadmath_snprintf(NULL, 0, format.c_str(), calculation_result);
-		if (n > 0)
-		{
-			string out(n + 1, '\0');
-			quadmath_snprintf(&out[0], out.capacity(), format.c_str(), calculation_result);
-			cout << out << endl;
-		}
+		uint32_t amount_chars = (uint32_t)quadmath_snprintf(NULL, 0, format.c_str(), calculation_result);
+		string out(amount_chars + 1, '\0');
+		quadmath_snprintf(&out[0], out.capacity(), format.c_str(), calculation_result);
+		cout << out << endl;
 
-		string end;
-		cin >> end;
+		cout << endl;
 	}
 
 	return 0;
