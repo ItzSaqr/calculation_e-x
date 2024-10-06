@@ -55,7 +55,7 @@ static void calculation_ex(__float128 x, uint32_t n, __float128* out)
 	duration<double> time = time_end - time_start;
 	cout << "t = " << time.count() << " s" << endl;
 
-	/*информация для отслеживания закономерностей*/
+	/*информация для отслеживания бесконечностей*/
 	if (pow_number == INFINITY || fact_number == INFINITY)
 	{
 		cout << "i = " << i << endl;
