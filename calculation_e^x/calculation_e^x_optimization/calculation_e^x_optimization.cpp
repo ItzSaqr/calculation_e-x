@@ -4,7 +4,7 @@
 
 int main()
 {
-	string format = "%.31Qe";
+	string format = "%.31Qg";
 
 	__float128 calculation_result;
 	__float128 x;
