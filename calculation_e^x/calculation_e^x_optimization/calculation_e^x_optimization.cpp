@@ -21,7 +21,11 @@ int main()
 		cout << "Enter n: ";
 		cin >> n;
 
-		calculation_ex_optimization(x, n, &calculation_result);
+		int threads_number;
+		cout << "Enter number of threads: ";
+		cin >> threads_number;
+
+		calculation_ex_optimization(x, n, &calculation_result, threads_number);
 
 		amount_chars = (uint32_t)quadmath_snprintf(NULL, 0, format.c_str(), calculation_result);
 		string out(amount_chars + 1, '\0');
